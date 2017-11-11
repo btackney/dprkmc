@@ -14,22 +14,6 @@ var battlefield = {
     viewerSocket: null,
 
     init: function() {
-
-        window.onmousemove = function(e){
-                var x = e.clientX;
-                var y = e.clientY;
-                console.log("MOVE " + x + "," + y);
-        };
-
-        window.onmouseup = function(e){
-            var x = e.clientX;
-            var y = e.clientY;
-            console.log("UP "+x + "," + y);
-
-            battlefield.addRocket(1920/2,1080,x,y);//Math.random()*800,Math.random()*600);
-
-        };
-
         document.body.appendChild(app.view);
     },
 
@@ -86,7 +70,12 @@ var battlefield = {
 };
 
 $( document ).ready(function() {
-
+    var battlefieldWidth = window.innerWidth;
+    var battlefieldHeight = window.innerHeight;
+    $(window).resize(function(){
+        battlefieldWidth = window.innerWidth;
+        battlefieldHeight = window.innerHeight;
+    });
     battlefield.init();
 
     battlefield.startGame();
@@ -121,6 +110,9 @@ $( document ).ready(function() {
         });
 
         socket.on('battlefield_launch_rocket', function(data){
+            var px = data.data.x / data.data.w;
+            var py = data.data.y / data.data.h;
+            battlefield.addRocket(1920/2, 1050, px*battlefieldWidth, py*battlefieldHeight);
             console.log(JSON.stringify(data));
         });
 
