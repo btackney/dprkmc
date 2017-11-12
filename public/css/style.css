@@ -3,8 +3,35 @@ html, body {
     height: 100% !important;
     overflow: hidden !important
 }
+.center{
+    text-align: center;
+    color: white;
+    padding-top: 100px;
+}
+.center a{
+    color: lightblue !important;
+    text-decoration: underline;
+}
 .radar-grid{
     background-image: url(https://s3.us-east-2.amazonaws.com/smartsigninteractive/radarbackgrounddone.png);
+}
+.homepic{
+    background-image: url(https://s3.us-east-2.amazonaws.com/smartsigninteractive/dprkmc.png);
+}
+.background {
+    position: fixed;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    background-size: cover;
+    background-color: #000;
+    background-repeat: no-repeat;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
 }
 .background-cover {
     position: fixed;

@@ -61,6 +61,14 @@ io.on('connect', (socket) => {
         socket.broadcast.emit('battlefield_missile_positions', data);
     });
 
+    socket.on('city_destroyed', (data) => {
+        for(var i =0; i<socketArray.length; i++){
+            if(socketArray[i].id === data.socket){
+                socketArray[i].emit('city_destroyed_over', data);
+            }
+        }
+    });
+
     //socket.join('dprkmc');
     socket.broadcast.emit('weaponSystemInfo', 'hi');
     console.log(socket.id + " joined ");

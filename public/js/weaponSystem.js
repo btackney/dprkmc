@@ -82,6 +82,9 @@ $(document).ready(function() {
             }
             //console.log(JSON.stringify(data))
         })
+        socket.on('city_destroyed_over', function(data) {
+            window.location = 'youlose.html';
+        })
     });
     window.onmousedown = function(e){
         globalMouseIsDown=true;

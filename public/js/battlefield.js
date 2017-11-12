@@ -226,8 +226,8 @@ var battlefield = {
             if(obj.y > (battlefield.battlefieldHeight-100) && obj.y < (battlefield.battlefieldHeight + 100) ){
                 for(var prop in cities){
                     if((obj.x > cities[prop].x) && (obj.x < (cities[prop].x + 180))){
-                        console.log("booom");
                         cities[prop].bunnyRef.y += 50;
+                        cities[prop].y += 50;
                         obj.y = battlefield.battlefieldHeight+500;
                     }
                 }
@@ -307,13 +307,16 @@ $( document ).ready(function() {
             var py = data.data.y / data.data.h;
             var startx = battlefield.battlefieldWidth/2;
             for(var prop in cities){
-                console.log("why wont u find me" + prop + " "+ data.data.city);
                 if(prop === data.data.city){
-                    startx = cities[prop].x + 90;
+                    if(!(cities[prop].y > battlefield.battlefieldHeight)){
+                        startx = cities[prop].x + 90;
+                        battlefield.addRocket(startx, battlefield.battlefieldHeight-50, px*battlefield.battlefieldWidth, py*battlefield.battlefieldHeight);
+                    }
+                    else{
+                        socket.emit('city_destroyed', {socket: data.socket});
+                    }
                 }
             }
-            console.log("startx " + startx);
-            battlefield.addRocket(startx, battlefield.battlefieldHeight-50, px*battlefield.battlefieldWidth, py*battlefield.battlefieldHeight);
         });
         setInterval(function(){
             var missilePositions = [];
