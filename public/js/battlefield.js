@@ -116,18 +116,39 @@ var battlefield = {
         battlefield.missiles.push(bunny);
         app.stage.addChild(bunny);
     },
-    destroyMissles: function(x,y,obj2){
+    destroyMissiles: function(x,y,obj2){
         for (var i=0;i<battlefield.missiles.length;i++){
             var obj = battlefield.missiles[i];
             if(distance(x, y, obj.x,obj.y) < 8){
                 obj.y = battlefield.battlefieldHeight+100;
                 obj.life=0;
                 obj2.y=-1000;
+                battlefield.explosion(x,y);
             }
         }
     },
     explosion: function(x,y){
-
+        for (var i=0;i<15;i++) {
+            var bunny = PIXI.Sprite.fromImage('img/explosion.png');
+            bunny.x = x;
+            bunny.y = y;
+            bunny.width=10;
+            bunny.height=10;
+            bunny.anchor.set(0.5);
+            bunny.dx = 8 - Math.floor(Math.random() * 16);
+            bunny.dy = 8 - Math.floor(Math.random() * 16);
+            bunny.life = Date.now();
+            battlefield.animations.push(bunny);
+            app.stage.addChild(bunny);
+        }
+    },
+    moveExplosion: function() {
+        for (var i=0;i<battlefield.animations.length;i++){
+            var obj=battlefield.animations[i];
+             obj.x+=obj.dx;
+             obj.y+=obj.dy;
+         obj.y+=.01*(Date.now()-obj.life);
+        }
     },
     removeCrossHair: function(){
       for(var i =0;i< battlefield.hairs.length;i++){
@@ -153,7 +174,24 @@ var battlefield = {
             }
         }
     },
-
+    removeDeadFromStageE: function() {
+        var animationsLifeSpan=2000;
+        var nn=Date.now();
+        for (var i=battlefield.animations.length-1;i>=0 ; i--){
+            var obj=battlefield.animations[i];
+            if (nn-obj.life>animationsLifeSpan) {
+                //console.log("dead " );
+                for (var j = app.stage.children.length - 1; j >= 0; j--) {
+                    if (app.stage.children[j].life) {
+                        if ((nn - app.stage.children[j].life) > animationsLifeSpan) {
+                            app.stage.removeChild(app.stage.children[j]);
+                        }
+                    }
+                };
+                battlefield.animations.splice(i,1);
+            }
+        }
+    },
     removeDeadFromStage: function() {
         var rocketlifespan=22222;
         var nn=Date.now();
@@ -172,13 +210,12 @@ var battlefield = {
             }
         }
     },
-
     moveRockets: function() {
         for (var i=0;i<battlefield.rockets.length;i++){
             var obj=battlefield.rockets[i];
             obj.x+=obj.dx;
             obj.y+=obj.dy;
-            battlefield.destroyMissles(obj.x, obj.y,obj);
+            battlefield.destroyMissiles(obj.x, obj.y,obj);
         }
     },
     moveMissiles: function() {
@@ -211,9 +248,11 @@ var battlefield = {
         // Listen for animate update
         app.ticker.add(function(delta) {
             battlefield.moveRockets();
+            battlefield.moveExplosion();
             battlefield.moveMissiles();
             battlefield.removeDeadFromStage();
             battlefield.removeDeadFromStageM();
+            battlefield.removeDeadFromStageE();
         });
     }
 };
