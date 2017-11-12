@@ -44,7 +44,7 @@ io.on('connect', (socket) => {
         }
 
         if (globalBattlefieldSocket) {
-            globalBattlefieldSocket.emit("joined", socket.name);
+            globalBattlefieldSocket.emit("joined", socket.id);
         }
     });
 
