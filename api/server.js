@@ -43,12 +43,13 @@ io.on('connect', (socket) => {
             globalBattlefieldSocket=socket;
         }
 
-        if (globalBattlefieldSocket) {
+        if (globalBattlefieldSocket && socket.type === "weaponSystem") {
             globalBattlefieldSocket.emit("joined", socket.id);
         }
     });
 
     socket.on('move_crosshair', (data) => {
+        console.log(JSON.stringify(data));
         globalBattlefieldSocket.emit('battlefield_move_crosshair', {'socket':socket.id, 'data': data } );
     });
 

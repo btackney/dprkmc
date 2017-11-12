@@ -12,7 +12,6 @@ function distance(a, b, c, d) {
     return resultValue;
 }
 
-var hairs={};
 
 var cities = {
     seoul: {
@@ -47,6 +46,7 @@ var battlefield = {
     rockets:[],
     missiles:[],
     animations:[],
+    hairs:[],
     battlefieldWidth: window.innerWidth,
     battlefieldHeight: window.innerHeight,
     viewerSocket: null,
@@ -135,18 +135,18 @@ var battlefield = {
                     if((obj.x > cities[prop].x) && (obj.x < (cities[prop].x + 180))){
                         console.log("booom");
                         cities[prop].bunnyRef.y += 50;
-                        obj.y = battlefield.battlefieldHeight;
+                        obj.y = battlefield.battlefieldHeight+500;
                     }
                 }
             }
         }
     },
     addCrosshair: function(socketid, x, y){
-
-        var bunny = PIXI.Sprite.fromImage('img/crosshair.png');
+        var bunny = PIXI.Sprite.fromImage('img/cross.png');
         bunny.x = x;
         bunny.y = y;
-        hairs[socketid]=bunny;
+        bunny.socketid = socketid;
+        battlefield.hairs.push(bunny);
         app.stage.addChild(bunny);
     },
     startGame: function() {
@@ -183,7 +183,8 @@ $( document ).ready(function() {
         socket.emit('identify', clientInfo);
 
         socket.on('joined', function(socketid){
-            battlefield.addCrosshair(socketid,-1000,-1000);
+            console.log('were u at' + socketid);
+            battlefield.addCrosshair(socketid,500,400);
         });
 
         socket.on('disconnect', function (data) {
@@ -195,9 +196,16 @@ $( document ).ready(function() {
         });
 
         socket.on('battlefield_move_crosshair', function(data){
-            hairs[data.socket].x=data.data.x;
-            hairs[data.socket].y=data.data.y;
-            //battlefield.showCrosshair(data.data.x, data.data.y);
+            console.log('crosshair update ' +  battlefield.hairs.length);
+            for (var i=0;i<battlefield.hairs.length;i++){
+                var obj=battlefield.hairs[i];
+                console.log(obj.socketid + " data " + data.data.socketid);
+                if (obj.socketid == data.data.socketid){
+                    console.log("boom found " + JSON.stringify(data));
+                    obj.x = 0+data.data.x;
+                    obj.y = 0+data.data.y;
+                }
+            }
         });
 
         socket.on('battlefield_launch_rocket', function(data){

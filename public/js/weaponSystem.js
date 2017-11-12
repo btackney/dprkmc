@@ -27,32 +27,34 @@ $(document).ready(function() {
         socket.emit('identify', clientInfo);
     });
 
-    window.onmousedown = function(e){
-        globalMouseIsDown=true;
-    };
-    window.onmousemove = function(e) {
-        var obj = {};
-        obj.x = e.clientX;
-        obj.y = e.clientY;
-        if (globalMouseIsDown) {
-            if (mySocketSaved) {
-                console.log('emitted move crosshair ' + obj);
-                mySocketSaved.emit("move_crosshair", obj);
-            }
-        }
+    // window.onmousedown = function(e){
+    //     globalMouseIsDown=true;
+    // };
 
-    };
-    window.onmouseup = function(e){
-        globalMouseIsDown=false;
-        var obj = {};
-        obj.x = e.clientX;
-        obj.y = e.clientY;
-        obj.w = clientWidth;
-        obj.h = clientHeight;
-        if (mySocketSaved) {
-            mySocketSaved.emit("launch_rocket", obj);
-        }
-    };
+    // window.onmousemove = function(e) {
+    //     var obj = {};
+    //     obj.x = e.clientX;
+    //     obj.y = e.clientY;
+    //     if (globalMouseIsDown) {
+    //         if (mySocketSaved) {
+    //             console.log('emitted move crosshair ' + obj);
+    //             mySocketSaved.emit("move_crosshair", obj);
+    //         }
+    //     }
+    // };
+
+    // window.onmouseup = function(e){
+    //     globalMouseIsDown=false;
+    //     var obj = {};
+    //     obj.x = e.clientX;
+    //     obj.y = e.clientY;
+    //     obj.w = clientWidth;
+    //     obj.h = clientHeight;
+    //     if (mySocketSaved) {
+    //         mySocketSaved.emit("launch_rocket", obj);
+    //     }
+    // };
+
     window.ontouchstart = function(e) {
         globalMouseIsDown=true;
         var pageX =  e.targetTouches[0].pageX ;//: e.pageX,
@@ -60,6 +62,7 @@ $(document).ready(function() {
         var obj = {};
         obj.x = pageX;
         obj.y = pageY;
+        obj.socketid=mySocketSaved.id;
         if (globalMouseIsDown) {
             if (mySocketSaved) {
                 console.log('emitted move crosshair ' + obj);
@@ -74,6 +77,7 @@ $(document).ready(function() {
         var obj = {};
         obj.x = pageX;
         obj.y = pageY;
+        obj.socketid=mySocketSaved.id;
         if (globalMouseIsDown) {
             if (mySocketSaved) {
                 console.log('emitted move crosshair ' + obj);
