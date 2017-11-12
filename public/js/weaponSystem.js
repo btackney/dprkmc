@@ -3,6 +3,23 @@ var globalMouseIsDown=false;
 
 var roundRobin=0;
 
+// init bunch of sounds
+ion.sound({
+    sounds: [
+        {name: "beer_can_opening"},
+        {name: "bell_ring"},
+        {name: "branch_break"},
+        {name: "button_click"},
+        {name: "e"}
+    ],
+
+    // main config
+    path: "sounds/",
+    preload: true,
+    multiplay: true,
+    volume: 0.9
+});
+
 function isFullScreen() {
     return (document.fullScreenElement && document.fullScreenElement !== null) || document.mozFullScreen || document.webkitIsFullScreen;
 }
@@ -46,7 +63,7 @@ function getParameterByName(name) {
 
 var weaponSystem = {
     missilePositions: function(data){
-        console.log(data);
+       // console.log(data);
     }
 }
 var clientWidth = window.innerWidth;
@@ -77,7 +94,7 @@ $(document).ready(function() {
                 var d="<div style='position:absolute;left:{{left}};top:{{top}};background-color:red;color:blue;'>XXX</div>";
                 d=d.replace("{{left}}",( Math.floor(data[i].x)/1920)*clientWidth + "px");
                 d=d.replace("{{top}}",( Math.floor(data[i].y)/1080)*clientHeight + "px");
-                console.log(d);
+              //  console.log(d);
                 $('#display').append(d);
             }
             //console.log(JSON.stringify(data))
@@ -86,36 +103,38 @@ $(document).ready(function() {
             window.location = 'youlose.html';
         })
     });
-    window.onmousedown = function(e){
-        globalMouseIsDown=true;
-    };
-    window.onmousemove = function(e) {
-        var obj = {};
-        obj.x = e.clientX;
-        obj.y = e.clientY;
-        obj.w = clientWidth;
-        obj.h = clientHeight;
-        obj.socketid=mySocketSaved.id;
-        if (globalMouseIsDown) {
-            if (mySocketSaved) {
-                console.log('emitted move crosshair ' + obj);
-                mySocketSaved.emit("move_crosshair", obj);
-            }
-        }
-    };
-    window.onmouseup = function(e){
-        globalMouseIsDown=false;
-        var obj = {};
-        obj.x = e.clientX;
-        obj.y = e.clientY;
-        obj.w = clientWidth;
-        obj.h = clientHeight;
-        obj.socketid=mySocketSaved.id;
-        obj.city = getParameterByName('city');
-        if (mySocketSaved) {
-            mySocketSaved.emit("launch_rocket", obj);
-        }
-    };
+    // window.onmousedown = function(e){
+    //     globalMouseIsDown=true;
+    // };
+    // window.onmousemove = function(e) {
+    //     var obj = {};
+    //     obj.x = e.clientX;
+    //     obj.y = e.clientY;
+    //     obj.w = clientWidth;
+    //     obj.h = clientHeight;
+    //     obj.socketid=mySocketSaved.id;
+    //     if (globalMouseIsDown) {
+    //         if (mySocketSaved) {
+    //             console.log('emitted move crosshair ' + obj);
+    //             mySocketSaved.emit("move_crosshair", obj);
+    //         }
+    //     }
+    // };
+
+    // window.onmouseup = function(e){
+    //     globalMouseIsDown=false;
+    //     var obj = {};
+    //     obj.x = e.clientX;
+    //     obj.y = e.clientY;
+    //     obj.w = clientWidth;
+    //     obj.h = clientHeight;
+    //     obj.socketid=mySocketSaved.id;
+    //     obj.city = getParameterByName('city');
+    //     if (mySocketSaved) {
+    //         mySocketSaved.emit("launch_rocket", obj);
+    //         ion.sound.play("e");
+    //     }
+    // };
 
     window.ontouchstart = function(e) {
         globalMouseIsDown=true;
@@ -164,6 +183,7 @@ $(document).ready(function() {
         obj.city = getParameterByName('city');
         if (mySocketSaved) {
             mySocketSaved.emit("launch_rocket", obj);
+            ion.sound.play("e");
         }
     }
 });

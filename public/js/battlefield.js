@@ -5,6 +5,24 @@ background.width = 1920;
 background.height = 1080;
 app.stage.addChild(background);
 
+
+// init bunch of sounds
+ion.sound({
+    sounds: [
+        {name: "beer_can_opening"},
+        {name: "bell_ring"},
+        {name: "branch_break"},
+        {name: "button_click"},
+        {name: "e"}
+    ],
+
+    // main config
+    path: "sounds/",
+    preload: true,
+    multiplay: true,
+    volume: 0.9
+});
+
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -83,8 +101,8 @@ var battlefield = {
         var angle = (( (Math.atan2( my, mx ) * 180 )  )/ Math.PI) ;//+ (90/Math.PI);
         angle=angle+90;
 
-        var dx=(destx-sx)/50;
-        var dy=(desty-sy)/50;
+        var dx=(destx-sx)/75;
+        var dy=(desty-sy)/75;
 
         angle=angle * (Math.PI/180);
 
@@ -128,6 +146,9 @@ var battlefield = {
         }
     },
     explosion: function(x,y){
+        // play sound
+        ion.sound.play("e");
+
         for (var i=0;i<15;i++) {
             var bunny = PIXI.Sprite.fromImage('img/explosion.png');
             bunny.x = x;
@@ -265,7 +286,8 @@ $( document ).ready(function() {
     });
     battlefield.init();
 
-    battlefield.startGame();
+  //  battlefield.startGame();
+
     var clientInfo = {
         name: Date.now()+Math.floor(Math.random()),
         type: 'battlefield',
@@ -282,6 +304,7 @@ $( document ).ready(function() {
 
         socket.on('joined', function(socketid){
             console.log('were u at' + socketid);
+            battlefield.startGame();
             battlefield.addCrosshair(socketid,-999,-999);
         });
         socket.on('disconnect', function (data) {

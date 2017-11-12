@@ -12,6 +12,7 @@ html, body {
     color: lightblue !important;
     text-decoration: underline;
     font-family: 'Stalinist One', cursive;
+    margin: 5px;
 }
 .no-overflow{
     overflow: hidden !important;
@@ -112,5 +113,13 @@ html, body {
         margin-left: -400px;
         margin-top: -400px;
         border-color: green;
+    }
+}
+
+/*mobile responsive for youtube video*/
+@media only screen and (max-width: 768px) {
+    .iframe-responsive{
+        width:90%;
+        height:90%;
     }
 }
