@@ -3,10 +3,36 @@ html, body {
     height: 100% !important;
     overflow: hidden !important
 }
+.radar-grid{
+    background-image: url(https://s3.us-east-2.amazonaws.com/smartsigninteractive/radarbackgrounddone.png);
+}
+.background-cover {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.radar-background {
+    position: fixed;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    background-size: cover;
+    background-color: #000;
+    background-repeat: no-repeat;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+}
 
 .radar{
     height: 100%;
-    background-color: black;
+    /*background-color: black;*/
 }
 
 .content {
@@ -15,7 +41,7 @@ html, body {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: black;
+    /*background-color: black;*/
     overflow: hidden;
 }
 
