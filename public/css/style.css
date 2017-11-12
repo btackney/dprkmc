@@ -1,7 +1,6 @@
 html, body {
     margin: 0 !important;
     height: 100% !important;
-    overflow: hidden !important
 }
 .center{
     text-align: center;
@@ -12,6 +11,14 @@ html, body {
 .center a{
     color: lightblue !important;
     text-decoration: underline;
+    font-family: 'Stalinist One', cursive;
+}
+.no-overflow{
+    overflow: hidden !important;
+}
+.center-loose{
+    text-align: center;
+    color: white;
     font-family: 'Stalinist One', cursive;
 }
 .radar-grid{
