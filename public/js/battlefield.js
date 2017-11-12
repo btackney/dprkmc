@@ -243,7 +243,7 @@ var battlefield = {
         app.stage.addChild(bunny);
     },
     startGame: function() {
-        setInterval(function(){ battlefield.addMissile() }, 1000);
+        setInterval(function(){ battlefield.addMissile() }, 500);
         setInterval(function(){ battlefield.removeCrossHair() }, 5000);
         // Listen for animate update
         app.ticker.add(function(delta) {

@@ -7,10 +7,12 @@ html, body {
     text-align: center;
     color: white;
     padding-top: 100px;
+    font-family: 'Stalinist One', cursive;
 }
 .center a{
     color: lightblue !important;
     text-decoration: underline;
+    font-family: 'Stalinist One', cursive;
 }
 .radar-grid{
     background-image: url(https://s3.us-east-2.amazonaws.com/smartsigninteractive/radarbackgrounddone.png);
