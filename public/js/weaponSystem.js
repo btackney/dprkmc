@@ -25,8 +25,10 @@ $(document).ready(function() {
     socket.on('connect', function(){
         mySocketSaved=socket;
         socket.emit('identify', clientInfo);
+        socket.on('battlefield_missile_positions', function(data){
+            console.log(JSON.stringify(data))
+        })
     });
-
     // window.onmousedown = function(e){
     //     globalMouseIsDown=true;
     // };
@@ -62,6 +64,8 @@ $(document).ready(function() {
         var obj = {};
         obj.x = pageX;
         obj.y = pageY;
+        obj.w = clientWidth;
+        obj.h = clientHeight;
         obj.socketid=mySocketSaved.id;
         if (globalMouseIsDown) {
             if (mySocketSaved) {
@@ -69,7 +73,6 @@ $(document).ready(function() {
                 mySocketSaved.emit("move_crosshair", obj);
             }
         }
-
     };
     window.ontouchmove = function(e) {
         var pageX =  e.targetTouches[0].pageX ;
@@ -77,6 +80,8 @@ $(document).ready(function() {
         var obj = {};
         obj.x = pageX;
         obj.y = pageY;
+        obj.w = clientWidth;
+        obj.h = clientHeight;
         obj.socketid=mySocketSaved.id;
         if (globalMouseIsDown) {
             if (mySocketSaved) {

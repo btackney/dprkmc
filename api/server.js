@@ -49,12 +49,16 @@ io.on('connect', (socket) => {
     });
 
     socket.on('move_crosshair', (data) => {
-        console.log(JSON.stringify(data));
         globalBattlefieldSocket.emit('battlefield_move_crosshair', {'socket':socket.id, 'data': data } );
     });
 
     socket.on('launch_rocket', (data) => {
         globalBattlefieldSocket.emit('battlefield_launch_rocket', {'socket':socket.id, 'data': data } );
+    });
+
+    socket.on('missile_positions', (data) => {
+        //console.log(data);
+        socket.broadcast.emit('battlefield_missile_positions', data);
     });
 
     //socket.join('dprkmc');

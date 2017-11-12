@@ -1,0 +1,54 @@
+html, body {
+    margin: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important
+}
+
+.radar{
+    height: 100%;
+    background-color: black;
+}
+
+.content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    overflow: hidden;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    position: relative;
+    /*left: 50%;*/
+    /*margin-left: -25px;*/
+    /*top: 50%;*/
+    /*margin-top: -25px;*/
+    border-radius: 50%;
+    border: 2px solid #fff;
+    animation: radar 2s infinite;
+    -webkit-animation: radar 2s infinite;
+    -webkit-transition: all ease-in-out;
+    transition: all ease-in;
+}
+
+@keyframes radar {
+    1% {
+        width: 51px;
+        height: 51px;
+        margin-left: -25.5px;
+        margin-top: -25.5px;
+        border-color: green;
+    }
+    100% {
+        width: 1600px;
+        height: 800px;
+        margin-left: -400px;
+        margin-top: -400px;
+        border-color: green;
+    }
+}

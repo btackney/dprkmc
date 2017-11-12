@@ -1,4 +1,9 @@
-var app = new PIXI.Application(1920, 1080, {backgroundColor : 0x000000});
+var app = new PIXI.Application(1920,1080);
+// create a new background sprite
+var background = new PIXI.Sprite.fromImage('img/sky2.png');
+background.width = 1920;
+background.height = 1080;
+app.stage.addChild(background);
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -71,14 +76,10 @@ var battlefield = {
         }
     },
     addRocket: function(sx,sy,destx,desty) {
-
         var dx=(destx-sx)/100;
         var dy=(desty-sy)/100;
-
         var bunny = PIXI.Sprite.fromImage('img/rocket.png');
-
         bunny.anchor.set(0.5);
-
         bunny.x = sx;
         bunny.y = sy;
         bunny.destX=destx;
@@ -88,7 +89,6 @@ var battlefield = {
         bunny.rotation = 0.0;
         battlefield.rockets.push(bunny);
         app.stage.addChild(bunny);
-
     },
     addMissile: function() {
         var bunny = PIXI.Sprite.fromImage('img/missile.png');
@@ -186,34 +186,39 @@ $( document ).ready(function() {
             console.log('were u at' + socketid);
             battlefield.addCrosshair(socketid,500,400);
         });
-
         socket.on('disconnect', function (data) {
             battlefield.viewerSocket = null;
         });
-
         socket.on('info', function (data) {
             console.log("info:" + JSON.stringify(data));
         });
-
         socket.on('battlefield_move_crosshair', function(data){
-            console.log('crosshair update ' +  battlefield.hairs.length);
             for (var i=0;i<battlefield.hairs.length;i++){
                 var obj=battlefield.hairs[i];
                 console.log(obj.socketid + " data " + data.data.socketid);
-                if (obj.socketid == data.data.socketid){
-                    console.log("boom found " + JSON.stringify(data));
-                    obj.x = 0+data.data.x;
-                    obj.y = 0+data.data.y;
+                if (obj.socketid === data.data.socketid){
+                    var px = data.data.x / data.data.w;
+                    var py = data.data.y / data.data.h;
+                    obj.x = battlefield.battlefieldWidth * px;
+                    obj.y = battlefield.battlefieldHeight * py;
                 }
             }
         });
-
         socket.on('battlefield_launch_rocket', function(data){
             var px = data.data.x / data.data.w;
             var py = data.data.y / data.data.h;
             battlefield.addRocket(battlefield.battlefieldWidth/2, battlefield.battlefieldHeight-50, px*battlefield.battlefieldWidth, py*battlefield.battlefieldHeight);
         });
-
+        setInterval(function(){
+            var missilePositions = [];
+            for(var i=0;i< battlefield.missiles.length; i++){
+                var currentMissile = {
+                    x: battlefield.missiles[i].x,
+                    y: battlefield.missiles[i].y
+                }
+                missilePositions.push(currentMissile);
+            }
+            socket.emit('missile_positions', missilePositions)
+        }, 2000);
     });
-
 });
